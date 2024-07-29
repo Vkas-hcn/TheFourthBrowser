@@ -1,13 +1,20 @@
 package com.phoenix.tail.butterfly.eats.concret.upside.vvvvpp.sssee
 
+import androidx.lifecycle.lifecycleScope
 import com.phoenix.tail.butterfly.eats.concret.upside.R
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.BaseFragment
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager
 import com.phoenix.tail.butterfly.eats.concret.upside.databinding.FragmentSearchBinding
 import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils.searchData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import java.util.UUID
 
-class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(){
+class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_search
 
@@ -33,14 +40,44 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(){
         }
     }
 
-    private fun checkReturnKey(type:String) {
+    private fun checkReturnKey(type: String) {
         AAApp.appComponent.searchData = type
         customizeReturnKey()
     }
+
     override fun observeViewModel() {
     }
 
     override fun customizeReturnKey() {
-        navigateTo(R.id.action_searchFragment_to_homeFragment)
+        showBackAd {
+            navigateTo(R.id.action_searchFragment_to_homeFragment)
+        }
+    }
+
+    private fun showBackAd(nextFun: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (AdManager.jumFunAd(AdManager.backHome)) {
+                nextFun()
+                return@launch
+            }
+            binding.showAdLoading = true
+            var i = 0
+            while (isActive) {
+                i++
+                if (AdManager.canShowAd(AdManager.backHome)) {
+                    cancel()
+                    binding.showAdLoading = false
+                    AdManager.showAd(AdManager.backHome, requireActivity()) {
+                        nextFun()
+                    }
+                }
+                if (i >= 10) {
+                    cancel()
+                    binding.showAdLoading = false
+                    nextFun()
+                }
+                delay(500)
+            }
+        }
     }
 }

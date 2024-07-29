@@ -7,15 +7,22 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.phoenix.tail.butterfly.eats.concret.upside.R
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.BaseFragment
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager
 import com.phoenix.tail.butterfly.eats.concret.upside.databinding.FragmentHomeBinding
 import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils
 import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils.searchData
 import com.phoenix.tail.butterfly.eats.concret.upside.vvvvpp.aaarr.PaperWebAdapter
 import com.phoenix.tail.butterfly.eats.concret.upside.vvvvpp.wwwtt.CustomWebView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.system.exitProcess
 
@@ -42,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         setEditView()
         clickFun()
         binding.showPage = 1
-
+        binding.showAdLoading = false
         binding.webContainer.addView(customWebView)
     }
 
@@ -81,16 +88,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             binding.showMenu = false
         }
         binding.aivHome.setOnClickListener {
-            binding.showPage = 1
-            binding.showMenu = false
+            showClickAd {
+                binding.showPage = 1
+                binding.showMenu = false
+            }
         }
         binding.aivHistory.setOnClickListener {
             binding.showMenu = false
             if (binding.showPage == 0) {
                 customWebView.handleBackPress()
             } else {
-                initHistoryAdapter()
-                binding.showPage = 2
+                showClickAd {
+                    initHistoryAdapter()
+                    binding.showPage = 2
+                }
             }
         }
         binding.aivMark.setOnClickListener {
@@ -98,8 +109,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             if (binding.showPage == 0) {
                 customWebView.goForwardPage()
             } else {
-                initMarksAdapter()
-                binding.showPage = 3
+                showClickAd {
+                    initMarksAdapter()
+                    binding.showPage = 3
+                }
             }
         }
         binding.aivMenu.setOnClickListener {
@@ -136,10 +149,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             binding.showMenu = false
         }
         binding.tvMarks.setOnClickListener {
-            binding.showMenu = true
-            initMarksAdapter()
-            binding.showPage = 3
-            binding.showMenu = false
+            showClickAd {
+                binding.showMenu = true
+                initMarksAdapter()
+                binding.showPage = 3
+                binding.showMenu = false
+            }
         }
         binding.tvSEngine.setOnClickListener {
             navigateTo(R.id.action_homeFragment_to_searchFragment)
@@ -324,6 +339,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     }
 
     private fun setBackGoUi() {
+        if (binding.showPage != 0) return
         if (customWebView.isAtStartOfBackHistory()) {
             binding.aivHistory.setImageResource(R.drawable.ic_web_back_2)
         } else {
@@ -388,6 +404,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
                     seachString
                         .lowercase(Locale.getDefault())
                 ))
+                all.isGone = !((all.url).lowercase(Locale.getDefault()).contains(
+                    seachString
+                        .lowercase(Locale.getDefault())
+                ))
             }
             showNoData(adapter, listData)
         }
@@ -417,16 +437,75 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     }
 
     override fun customizeReturnKey() {
-        if (!customWebView.handleBackPress()) {
-            binding.showPage = 1
-            return
-        }
-        if (binding.showPage != 1) {
-            binding.showPage = 1
-            return
-        }
         if (binding.showPage == 1) {
             exitProcess(0)
+            return
+        }
+        showBackAd {
+            if (!customWebView.handleBackPress()) {
+                binding.showPage = 1
+                return@showBackAd
+            }
+            if (binding.showPage != 1) {
+                binding.showPage = 1
+                return@showBackAd
+            }
+
+        }
+
+    }
+
+    private fun showBackAd(nextFun: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (AdManager.jumFunAd(AdManager.backHome)) {
+                nextFun()
+                return@launch
+            }
+            binding.showAdLoading = true
+            var i = 0
+            while (isActive) {
+                i++
+                if (AdManager.canShowAd(AdManager.backHome)) {
+                    cancel()
+                    binding.showAdLoading = false
+                    AdManager.showAd(AdManager.backHome, requireActivity()) {
+                        nextFun()
+                    }
+                }
+                if (i >= 10) {
+                    cancel()
+                    binding.showAdLoading = false
+                    nextFun()
+                }
+                delay(500)
+            }
+        }
+    }
+
+    private fun showClickAd(nextFun: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (AdManager.jumFunAd(AdManager.clickInt)) {
+                nextFun()
+                return@launch
+            }
+            binding.showAdLoading = true
+            var i = 0
+            while (isActive) {
+                i++
+                if (AdManager.canShowAd(AdManager.clickInt)) {
+                    cancel()
+                    binding.showAdLoading = false
+                    AdManager.showAd(AdManager.clickInt, requireActivity()) {
+                        nextFun()
+                    }
+                }
+                if (i >= 20) {
+                    cancel()
+                    binding.showAdLoading = false
+                    nextFun()
+                }
+                delay(500)
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp.Companion.SaDataStore
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdDataList
 import com.phoenix.tail.butterfly.eats.concret.upside.vvvvpp.wwwtt.CustomWebView
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -18,7 +19,7 @@ import java.io.OutputStreamWriter
 
 object DataUtils {
     val pp_url = "https://www.google.com/"
-    const val ccckk_url = "https://test.onlinenetwork.link/tKyBVzPf/kmFHD/RMA/"
+    const val ccckk_url = "https://faustian.browserstable.com/guignol/electra/plane"
 
     const val ins_url = "https://www.baidu.com/"
     const val fb_url = "https://www.baidu.com/"
@@ -61,6 +62,47 @@ object DataUtils {
             runBlocking {
                 SaDataStore.edit { preferences ->
                     preferences[stringPreferenceKey("blackData")] = value.orEmpty()
+                }
+            }
+        }
+
+    var Context.clickInt: String?
+        get() = runBlocking {
+            SaDataStore.data
+                .map { preferences -> preferences[stringPreferenceKey("clickInt")] }
+                .first()
+        }
+        set(value) {
+            runBlocking {
+                SaDataStore.edit { preferences ->
+                    preferences[stringPreferenceKey("clickInt")] = value.orEmpty()
+                }
+            }
+        }
+    var Context.showInt: String?
+        get() = runBlocking {
+            SaDataStore.data
+                .map { preferences -> preferences[stringPreferenceKey("showInt")] }
+                .first()
+        }
+        set(value) {
+            runBlocking {
+                SaDataStore.edit { preferences ->
+                    preferences[stringPreferenceKey("showInt")] = value.orEmpty()
+                }
+            }
+        }
+
+    var Context.lastResetTime: String?
+        get() = runBlocking {
+            SaDataStore.data
+                .map { preferences -> preferences[stringPreferenceKey("lastResetTime")] }
+                .first()
+        }
+        set(value) {
+            runBlocking {
+                SaDataStore.edit { preferences ->
+                    preferences[stringPreferenceKey("lastResetTime")] = value.orEmpty()
                 }
             }
         }
@@ -123,4 +165,44 @@ object DataUtils {
         val typeToken = object : TypeToken<MutableList<CustomWebView.WebPageInfo>>() {}.type
         return Gson().fromJson(json, typeToken)
     }
+
+    fun getAdsData():AdDataList{
+        return Gson().fromJson(ad_json,AdDataList::class.java)
+    }
+
+
+   const val ad_json = """
+       {
+    "showUpperLimit": 200,
+    "clickUpperLimit": 1,
+    "open": [
+        {
+            "id": "ca-app-pub-3940256099942544/9257395921",
+            "platform": "admob",
+            "type": "open",
+            "weights": 2,
+            "where": "open"
+        }
+    ],
+    "backHome": [
+        {
+            "id": "ca-app-pub-3940256099942544/1033173712",
+            "platform": "admob",
+            "type": "int",
+            "weights": 2,
+            "where": "backHome"
+        }
+    ],
+    "clickInt": [
+        {
+            "id": "ca-app-pub-3940256099942544/1033173712",
+            "platform": "admob",
+            "type": "int",
+            "weights": 2,
+            "where": "clickInt"
+        }
+    ]
+}
+   """
+
 }

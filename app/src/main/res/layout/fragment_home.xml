@@ -11,7 +11,10 @@
             name="showItemMenu"
             type="Integer"
             android:value="1" />
-
+        <variable
+            name="showAdLoading"
+            type="Boolean"
+            android:value="false" />
         <variable
             name="showMenu"
             type="Boolean"
@@ -172,8 +175,8 @@
                 android:background="@drawable/ic_home_zw"
                 android:gravity="center"
                 android:padding="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="16dp">
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -571,6 +574,51 @@
                 android:gravity="center"
                 android:src="@{showMenu ?@drawable/ic_menu_1:@drawable/ic_menu_2}" />
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_load_ad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{showAdLoading ? View.VISIBLE : View.GONE}"
+            android:gravity="center">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#80000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_menu"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="loading"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
