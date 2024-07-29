@@ -59,7 +59,7 @@ class PpFragment : BaseFragment<FragmentPpBinding, PpViewModel>() {
             var i = 0
             while (isActive) {
                 i++
-                if (AdManager.canShowAd(AdManager.backHome)) {
+                if (i >= 2 && AdManager.canShowAd(AdManager.backHome)) {
                     cancel()
                     binding.showAdLoading = false
                     AdManager.showAd(AdManager.backHome, requireActivity()) {

@@ -113,7 +113,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:src="@drawable/ic_google" />
+                android:src="@drawable/ic_home" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -175,7 +175,7 @@
                     android:ellipsize="end"
                     android:maxLength="35"
                     android:maxLines="1"
-                    android:text="Bing"
+                    android:text="Yahoo"
                     android:textColor="#FF333333"
                     android:textSize="15sp" />
 

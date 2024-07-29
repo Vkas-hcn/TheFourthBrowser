@@ -1,5 +1,6 @@
 package com.phoenix.tail.butterfly.eats.concret.upside.vvvvpp.hhhee
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -30,9 +31,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     CustomWebView.WebViewCallback {
     private lateinit var customWebView: CustomWebView
     private lateinit var markAdapter: PaperWebAdapter
-    private var markListData: MutableList<CustomWebView.WebPageInfo>? = null
+    private var markListData: MutableList<CustomWebView.WebPageInfo> = ArrayList()
     private lateinit var historyAdapter: PaperWebAdapter
-    private var historyListData: MutableList<CustomWebView.WebPageInfo>? = null
+    private var historyListData: MutableList<CustomWebView.WebPageInfo> = ArrayList()
 
     private var isAllCheckMark = false
     private var isAllUnCheckHistory = false
@@ -48,6 +49,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         customWebView.setOnWebViewCallbackListener(this)
         setEditView()
         clickFun()
+        initMarksAdapter()
+        initHistoryAdapter()
         binding.showPage = 1
         binding.showAdLoading = false
         binding.webContainer.addView(customWebView)
@@ -55,6 +58,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
     override fun onResume() {
         super.onResume()
+        setImgSearchLogo()
+    }
+
+    private fun setImgSearchLogo(){
         when (AAApp.appComponent.searchData) {
             "1" -> {
                 binding.imgSearchLogo.setImageResource(R.drawable.ic_bing)
@@ -62,28 +69,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
 
             "2" -> {
-                binding.imgSearchLogo.setImageResource(R.drawable.ic_google)
-                binding.imgSearLogo.setImageResource(R.drawable.ic_google)
+                binding.imgSearchLogo.setImageResource(R.drawable.ic_home)
+                binding.imgSearLogo.setImageResource(R.drawable.ic_home)
             }
 
             "3" -> {
                 binding.imgSearchLogo.setImageResource(R.drawable.ic_yahoo)
-                binding.imgSearLogo.setImageResource(R.drawable.ic_google)
+                binding.imgSearLogo.setImageResource(R.drawable.ic_yahoo)
             }
 
             "4" -> {
                 binding.imgSearchLogo.setImageResource(R.drawable.ic_duck)
-                binding.imgSearLogo.setImageResource(R.drawable.ic_google)
+                binding.imgSearLogo.setImageResource(R.drawable.ic_duck)
             }
 
             else -> {
-                binding.imgSearchLogo.setImageResource(R.drawable.ic_google)
-                binding.imgSearLogo.setImageResource(R.drawable.ic_google)
+                binding.imgSearchLogo.setImageResource(R.drawable.ic_home)
+                binding.imgSearLogo.setImageResource(R.drawable.ic_home)
             }
         }
     }
 
     private fun clickFun() {
+        binding.imgHomeSearch.setOnClickListener {
+            urlToWebView(binding.etHome)
+        }
         binding.viewMark.setOnClickListener {
             binding.showMenu = false
         }
@@ -167,6 +177,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         }
 
         binding.imgCheck.setOnClickListener {
+            if(markListData.isEmpty())return@setOnClickListener
             isAllCheckMark = !isAllCheckMark
             isShowAllSelected(isAllCheckMark)
         }
@@ -191,6 +202,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
         }
         binding.imgCheckHistory.setOnClickListener {
+            if(historyListData.isEmpty())return@setOnClickListener
             isAllUnCheckHistory = !isAllUnCheckHistory
             isShowAllSelectedHistory(isAllUnCheckHistory)
         }
@@ -227,6 +239,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         markAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun isShowAllSelectedHistory(isAllCheck: Boolean) {
         binding.atvClear.isVisible = isAllCheck
         if (isAllCheck) {
@@ -234,7 +247,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         } else {
             binding.imgCheckHistory.setImageResource(R.drawable.ic_check)
         }
-        historyListData?.forEach {
+        historyListData.forEach {
             it.selected = isAllCheck
         }
         historyAdapter.notifyDataSetChanged()
@@ -243,8 +256,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     private fun initMarksAdapter() {
         markListData = customWebView.getWebsiteInfoList(true)
         binding.showNoMarkData = markListData.isNullOrEmpty()
-        if (markListData.isNullOrEmpty()) return
-        markAdapter = PaperWebAdapter(markListData!!)
+        markAdapter = PaperWebAdapter(markListData)
         binding.rvMark.adapter = markAdapter
         val layoutManager = LinearLayoutManager(activity)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -281,7 +293,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
                         binding.llButton.isVisible = true
                     }
                 }
-                markAdapter.updateData(markListData!!)
+                markAdapter.updateData(markListData)
                 binding.imgCheck.setImageResource(
                     if (isAllCheckMark) R.drawable.ic_check_x else R.drawable.ic_check
                 )
@@ -292,8 +304,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     private fun initHistoryAdapter() {
         historyListData = customWebView.getWebsiteInfoList(false)
         binding.showNoHistoryData = historyListData.isNullOrEmpty()
-        if (historyListData.isNullOrEmpty()) return
-        historyAdapter = PaperWebAdapter(historyListData!!)
+        historyAdapter = PaperWebAdapter(historyListData)
         binding.rvHistory.adapter = historyAdapter
         val layoutManager = LinearLayoutManager(activity)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -379,7 +390,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
 
         binding.etWebMark.addTextChangedListener() {
-            showSearchWebItem(it.toString(), markAdapter, markListData!!)
+            showSearchWebItem(it.toString(), markAdapter, markListData)
         }
     }
 
@@ -465,7 +476,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             var i = 0
             while (isActive) {
                 i++
-                if (AdManager.canShowAd(AdManager.backHome)) {
+                if (i >= 2 && AdManager.canShowAd(AdManager.backHome)) {
                     cancel()
                     binding.showAdLoading = false
                     AdManager.showAd(AdManager.backHome, requireActivity()) {
@@ -492,7 +503,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             var i = 0
             while (isActive) {
                 i++
-                if (AdManager.canShowAd(AdManager.clickInt)) {
+                if (i >= 2 && AdManager.canShowAd(AdManager.clickInt)) {
                     cancel()
                     binding.showAdLoading = false
                     AdManager.showAd(AdManager.clickInt, requireActivity()) {

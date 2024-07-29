@@ -12,10 +12,6 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import kotlin.concurrent.thread
 object NetUtils {
-
-
-
-
     fun getBlackData(url: String, onSuccess:(response:String)->Unit,onErrorAction: (error:String)->Unit) {
         val urlBuilder = StringBuilder(url)
         val map = CenterUtils.blackData()

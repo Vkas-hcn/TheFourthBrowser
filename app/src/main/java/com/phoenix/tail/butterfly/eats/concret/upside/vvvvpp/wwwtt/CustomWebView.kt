@@ -124,10 +124,10 @@ class CustomWebView @JvmOverloads constructor(
         DataUtils.saveWebPageInfoList(context, beanList, isMark)
     }
 
-    fun getWebsiteInfoList(isMark: Boolean): MutableList<WebPageInfo>? {
+    fun getWebsiteInfoList(isMark: Boolean): MutableList<WebPageInfo> {
         return DataUtils.loadWebPageInfoList(context, isMark)?.asSequence()
             ?.sortedByDescending { it.date }
-            ?.toMutableList()
+            ?.toMutableList()?: emptyList<WebPageInfo>().toMutableList()
     }
 
     fun deleteWebsiteInfo(context: Context, isMark: Boolean, date: String) {

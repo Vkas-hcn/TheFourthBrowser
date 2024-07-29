@@ -22,9 +22,9 @@
 -optimizationpasses 5
 -dontskipnonpubliclibraryclassmembers
 -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
--obfuscationdictionary proguard-xi.txt
--classobfuscationdictionary proguard-xi.txt
--packageobfuscationdictionary proguard-xi.txt
+-obfuscationdictionary proguard-dlz.txt
+-classobfuscationdictionary proguard-dlz.txt
+-packageobfuscationdictionary proguard-dlz.txt
 
 -keep class androidx.lifecycle.** { *; }
 -dontwarn androidx.lifecycle.**

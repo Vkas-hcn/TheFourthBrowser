@@ -1,8 +1,17 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'stringfog'
 }
-
+import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
+import com.github.megatronking.stringfog.plugin.StringFogMode
+stringfog {
+    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+    enable true
+    fogPackages = ['com.phoenix.tail.butterfly.eats.concret.upside']
+    kg new RandomKeyGenerator()
+    mode StringFogMode.base64
+}
 android {
     namespace 'com.phoenix.tail.butterfly.eats.concret.upside'
     compileSdk 34
@@ -67,5 +76,6 @@ dependencies {
 
     implementation "androidx.datastore:datastore-preferences:1.1.1"
     implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'com.github.megatronking.stringfog:xor:4.0.1'
 
 }

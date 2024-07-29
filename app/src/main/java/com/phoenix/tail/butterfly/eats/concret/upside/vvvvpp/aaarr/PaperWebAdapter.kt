@@ -88,16 +88,6 @@ class PaperWebAdapter(private var dataList: MutableList<CustomWebView.WebPageInf
         dataList = newData
         notifyDataSetChanged()
     }
-//    fun deleteData(position: Int,isHistory: Boolean) {
-//        if(isHistory){
-//            BVDataUtils.deleteWebPageHistory(dataList[position])
-//        }else{
-//            BVDataUtils.deleteWebPageBookmark(dataList[position])
-//        }
-//        dataList.removeAt(position)
-//        notifyItemRemoved(position)
-//        notifyItemRangeChanged(position, dataList.size)
-//    }
 
     private fun setVisibility(isVisible: Boolean, itemView: View) {
         val param = itemView.layoutParams as RecyclerView.LayoutParams
