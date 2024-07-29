@@ -183,7 +183,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="35"
-                    android:text="https://www.bing.com/search?q="
+                    android:text="https://search.yahoo.com/search?p="
                     android:textColor="#FF999999"
                     android:textSize="12sp" />
 

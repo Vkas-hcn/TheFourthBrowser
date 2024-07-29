@@ -13,22 +13,22 @@ import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp
 import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils
-import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils.clickInt
+import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils.cccckkii
 import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils.lastResetTime
 import com.phoenix.tail.butterfly.eats.concret.upside.uuuuss.DataUtils.showInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object AdManager {
-    const val open = "open"
-    const val backHome = "backHome"
-    const val clickInt = "clickInt"
+    const val oooonn = "oooonn"
+    const val bbbbhhee = "bbbbhhee"
+    const val cccckkii = "cccckkii"
     private val strategies = mutableMapOf<String, AdStrategy>()
 
     init {
-        strategies["open"] = OpenAdStrategy()
-        strategies["backHome"] = IntAdStrategy()
-        strategies["clickInt"] = IntAdStrategy()
+        strategies["oooonn"] = OpenAdStrategy()
+        strategies["bbbbhhee"] = IntAdStrategy()
+        strategies["cccckkii"] = IntAdStrategy()
         resetCountsIfNeeded()
     }
 
@@ -38,14 +38,14 @@ object AdManager {
         val nextResetTime = lastResetTime + 24 * 60 * 60 * 1000
         if (currentTime >= nextResetTime) {
             AAApp.appComponent.showInt = "0"
-            AAApp.appComponent.clickInt = "0"
+            AAApp.appComponent.cccckkii = "0"
             AAApp.appComponent.lastResetTime = currentTime.toString()
         }
     }
 
     private fun moreAdNumLoad(ads: AdDataList, loadFun: () -> Unit) {
         if (((AAApp.appComponent.showInt?.toInt()
-                ?: 0) < ads.showUpperLimit) && ((AAApp.appComponent.clickInt?.toInt()
+                ?: 0) < ads.showUpperLimit) && ((AAApp.appComponent.cccckkii?.toInt()
                 ?: 0) < ads.clickUpperLimit)
         ) {
             loadFun()
@@ -57,20 +57,20 @@ object AdManager {
     fun loadAd(type: String) {
         val ads = DataUtils.getAdsData()
         val adData = when (type) {
-            "open" -> {
-                ads.open
+            "oooonn" -> {
+                ads.oooonn
             }
 
-            "backHome" -> {
-                ads.backHome
+            "bbbbhhee" -> {
+                ads.bbbbhhee
             }
 
-            "clickInt" -> {
-                ads.clickInt
+            "cccckkii" -> {
+                ads.cccckkii
             }
 
             else -> {
-                ads.open
+                ads.oooonn
             }
         }
         resetCountsIfNeeded()
@@ -84,10 +84,10 @@ object AdManager {
     }
 
     fun onAdClickedFun() {
-        var clickNum = AAApp.appComponent.clickInt?.toInt()
+        var clickNum = AAApp.appComponent.cccckkii?.toInt()
             ?: 0
         clickNum++
-        AAApp.appComponent.clickInt = clickNum.toString()
+        AAApp.appComponent.cccckkii = clickNum.toString()
     }
 
     fun onAdShowedFun() {
@@ -99,13 +99,16 @@ object AdManager {
 
     fun canShowAd(type: String): Boolean {
         val cachedAd = AdCacheManager.getAd(type)
+        if (cachedAd == null) {
+            loadAd(type)
+        }
         return cachedAd != null
     }
 
     fun jumFunAd(type: String): Boolean {
         val ads = DataUtils.getAdsData()
         val jumState: Boolean = !(((AAApp.appComponent.showInt?.toInt()
-            ?: 0) < ads.showUpperLimit) && ((AAApp.appComponent.clickInt?.toInt()
+            ?: 0) < ads.showUpperLimit) && ((AAApp.appComponent.cccckkii?.toInt()
             ?: 0) < ads.clickUpperLimit))
         return !canShowAd(type) && jumState
     }
@@ -114,11 +117,11 @@ object AdManager {
         val cachedAd = AdCacheManager.getAd(type)
         if (cachedAd != null) {
             when (type) {
-                open -> {
+                oooonn -> {
                     showOpenAda(activity, cachedAd, onAdDismissed)
                 }
 
-                clickInt, backHome -> {
+                cccckkii, bbbbhhee -> {
                     showClickAda(activity, cachedAd, type, onAdDismissed)
                 }
             }
@@ -144,11 +147,11 @@ object AdManager {
 
                 override fun onAdShowedFullScreenContent() {
                     onAdShowedFun()
-                    AdCacheManager.clearAd(open)
+                    AdCacheManager.clearAd(oooonn)
                 }
 
                 override fun onAdFailedToShowFullScreenContent(e: AdError) {
-                    AdCacheManager.clearAd(open)
+                    AdCacheManager.clearAd(oooonn)
                 }
 
                 override fun onAdClicked() {
@@ -164,7 +167,7 @@ object AdManager {
                     adF.run {
                         fullScreenContentCallback = callback
                         show(activity)
-                        Log.e("TAG", "showAd open ")
+                        Log.e("TAG", "showAd oooonn ")
                     }
                 }
 

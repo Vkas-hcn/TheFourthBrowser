@@ -149,6 +149,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
         }
         binding.tvRefresh.setOnClickListener {
+            binding.showMenu = false
             customWebView.refreshPage()
         }
         binding.tvAdd.setOnClickListener {
@@ -181,22 +182,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             isAllCheckMark = !isAllCheckMark
             isShowAllSelected(isAllCheckMark)
         }
-        binding.atvCancel.setOnClickListener {
-            binding.llButton.isVisible = false
-        }
+
         binding.atvDelete.setOnClickListener {
             activity?.let { activityContext ->
                 viewModel.showDeleteDialog(activityContext) {
                     binding.llButton.isVisible = false
                     binding.imgCheck.setImageResource(R.drawable.ic_check)
-                    val toBeRemoved = markListData?.filter { it.selected }?.toList() ?: emptyList()
+                    val toBeRemoved = markListData.filter { it.selected }?.toList() ?: emptyList()
 
                     if (toBeRemoved.isNotEmpty()) {
                         toBeRemoved.forEach { item ->
                             customWebView.deleteWebsiteInfo(activityContext, true, item.date)
                         }
-                        markListData?.removeAll(toBeRemoved)
-                        showNoData(markAdapter, markListData!!)
+                        markListData.removeAll(toBeRemoved)
+                        showNoData(markAdapter, markListData)
                     }
                 }
             }
@@ -212,14 +211,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
                     binding.atvClear.isVisible = false
                     binding.imgCheckHistory.setImageResource(R.drawable.ic_check)
                     val toBeRemoved =
-                        historyListData?.filter { it.selected }?.toList() ?: emptyList()
+                        historyListData.filter { it.selected }.toList() ?: emptyList()
 
                     if (toBeRemoved.isNotEmpty()) {
                         toBeRemoved.forEach { item ->
                             customWebView.deleteWebsiteInfo(activityContext, false, item.date)
                         }
-                        historyListData?.removeAll(toBeRemoved)
-                        showNoData(historyAdapter, historyListData!!)
+                        historyListData.removeAll(toBeRemoved)
+                        showNoData(historyAdapter, historyListData)
                     }
                 }
             }
@@ -255,6 +254,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
     private fun initMarksAdapter() {
         markListData = customWebView.getWebsiteInfoList(true)
+        markListData.forEach {
+            it.selected = false
+        }
+        binding.llButton.isVisible = false
+        binding.imgCheck.setImageResource(R.drawable.ic_check)
         binding.showNoMarkData = markListData.isNullOrEmpty()
         markAdapter = PaperWebAdapter(markListData)
         binding.rvMark.adapter = markAdapter
@@ -288,7 +292,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
                     }
                 }
                 binding.llButton.isVisible = hasSelected // Directly set visibility based on flag
-                markListData?.forEach {
+                markListData.forEach {
                     if (it.selected) {
                         binding.llButton.isVisible = true
                     }
@@ -303,6 +307,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
     private fun initHistoryAdapter() {
         historyListData = customWebView.getWebsiteInfoList(false)
+        historyListData.forEach {
+            it.selected = false
+        }
+        binding.atvClear.isVisible = false
+        binding.imgCheck.setImageResource(R.drawable.ic_check)
         binding.showNoHistoryData = historyListData.isNullOrEmpty()
         historyAdapter = PaperWebAdapter(historyListData)
         binding.rvHistory.adapter = historyAdapter
@@ -468,7 +477,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
     private fun showBackAd(nextFun: () -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
-            if (AdManager.jumFunAd(AdManager.backHome)) {
+            if (AdManager.jumFunAd(AdManager.bbbbhhee)) {
                 nextFun()
                 return@launch
             }
@@ -476,10 +485,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             var i = 0
             while (isActive) {
                 i++
-                if (i >= 2 && AdManager.canShowAd(AdManager.backHome)) {
+                if (i >= 2 && AdManager.canShowAd(AdManager.bbbbhhee)) {
                     cancel()
                     binding.showAdLoading = false
-                    AdManager.showAd(AdManager.backHome, requireActivity()) {
+                    AdManager.showAd(AdManager.bbbbhhee, requireActivity()) {
                         nextFun()
                     }
                 }
@@ -495,7 +504,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
     private fun showClickAd(nextFun: () -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
-            if (AdManager.jumFunAd(AdManager.clickInt)) {
+            if (AdManager.jumFunAd(AdManager.cccckkii)) {
                 nextFun()
                 return@launch
             }
@@ -503,10 +512,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             var i = 0
             while (isActive) {
                 i++
-                if (i >= 2 && AdManager.canShowAd(AdManager.clickInt)) {
+                if (i >= 2 && AdManager.canShowAd(AdManager.cccckkii)) {
                     cancel()
                     binding.showAdLoading = false
-                    AdManager.showAd(AdManager.clickInt, requireActivity()) {
+                    AdManager.showAd(AdManager.cccckkii, requireActivity()) {
                         nextFun()
                     }
                 }

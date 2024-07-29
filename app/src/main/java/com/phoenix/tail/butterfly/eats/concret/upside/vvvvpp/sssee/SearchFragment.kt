@@ -56,7 +56,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private fun showBackAd(nextFun: () -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
-            if (AdManager.jumFunAd(AdManager.backHome)) {
+            if (AdManager.jumFunAd(AdManager.bbbbhhee)) {
                 nextFun()
                 return@launch
             }
@@ -64,10 +64,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             var i = 0
             while (isActive) {
                 i++
-                if (i >= 2 && AdManager.canShowAd(AdManager.backHome)) {
+                if (i >= 2 && AdManager.canShowAd(AdManager.bbbbhhee)) {
                     cancel()
                     binding.showAdLoading = false
-                    AdManager.showAd(AdManager.backHome, requireActivity()) {
+                    AdManager.showAd(AdManager.bbbbhhee, requireActivity()) {
                         nextFun()
                     }
                 }

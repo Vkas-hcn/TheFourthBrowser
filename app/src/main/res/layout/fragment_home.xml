@@ -416,18 +416,6 @@
                 android:orientation="horizontal"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/atv_cancel"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#E2E2E2"
-                    android:gravity="center"
-                    android:text="Cancel"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="15sp" />
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/atv_delete"
                     android:layout_width="0dp"

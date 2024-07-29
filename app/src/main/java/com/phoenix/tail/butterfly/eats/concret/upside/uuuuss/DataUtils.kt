@@ -66,16 +66,16 @@ object DataUtils {
             }
         }
 
-    var Context.clickInt: String?
+    var Context.cccckkii: String?
         get() = runBlocking {
             SaDataStore.data
-                .map { preferences -> preferences[stringPreferenceKey("clickInt")] }
+                .map { preferences -> preferences[stringPreferenceKey("cccckkii")] }
                 .first()
         }
         set(value) {
             runBlocking {
                 SaDataStore.edit { preferences ->
-                    preferences[stringPreferenceKey("clickInt")] = value.orEmpty()
+                    preferences[stringPreferenceKey("cccckkii")] = value.orEmpty()
                 }
             }
         }
@@ -175,31 +175,31 @@ object DataUtils {
        {
     "showUpperLimit": 200,
     "clickUpperLimit": 1,
-    "open": [
+    "oooonn": [
         {
-            "id": "ca-app-pub-3940256099942544/9257395921",
-            "platform": "admob",
-            "type": "open",
-            "weights": 2,
-            "where": "open"
+            "ssssffzz": "ca-app-pub-3940256099942544/9257395921",
+            "ppppffmm": "admob",
+            "ttttpppee": "oooonn",
+            "wwwwtttss": 2,
+            "wwwweeeee": "oooonn"
         }
     ],
-    "backHome": [
+    "bbbbhhee": [
         {
-            "id": "ca-app-pub-3940256099942544/1033173712",
-            "platform": "admob",
-            "type": "int",
-            "weights": 2,
-            "where": "backHome"
+            "ssssffzz": "ca-app-pub-3940256099942544/1033173712",
+            "ppppffmm": "admob",
+            "ttttpppee": "int",
+            "wwwwtttss": 2,
+            "wwwweeeee": "bbbbhhee"
         }
     ],
-    "clickInt": [
+    "cccckkii": [
         {
-            "id": "ca-app-pub-3940256099942544/1033173712",
-            "platform": "admob",
-            "type": "int",
-            "weights": 2,
-            "where": "clickInt"
+            "ssssffzz": "ca-app-pub-3940256099942544/1033173712",
+            "ppppffmm": "admob",
+            "ttttpppee": "int",
+            "wwwwtttss": 2,
+            "wwwweeeee": "cccckkii"
         }
     ]
 }

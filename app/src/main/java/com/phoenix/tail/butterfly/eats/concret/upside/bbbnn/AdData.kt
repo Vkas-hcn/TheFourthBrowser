@@ -1,18 +1,18 @@
 package com.phoenix.tail.butterfly.eats.concret.upside.bbbnn
 
 data class AdData(
-    val id: String,
-    val platform: String,
-    val type: String,
-    val weights: Int,
-    val where: String
+    val ssssffzz: String,
+    val ppppffmm: String,
+    val ttttpppee: String,
+    val wwwwtttss: Int,
+    val wwwweeeee: String
 )
 data class AdDataList(
     val showUpperLimit: Int,
     val clickUpperLimit: Int,
-    val open: MutableList<AdData>,
-    val backHome: MutableList<AdData>,
-    val clickInt: MutableList<AdData>,
+    val oooonn: MutableList<AdData>,
+    val bbbbhhee: MutableList<AdData>,
+    val cccckkii: MutableList<AdData>,
 )
 data class CachedAd(
     val adObject: Any,

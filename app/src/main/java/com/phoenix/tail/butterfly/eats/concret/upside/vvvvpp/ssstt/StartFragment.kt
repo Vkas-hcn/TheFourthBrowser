@@ -7,9 +7,9 @@ import android.widget.ImageView
 import com.phoenix.tail.butterfly.eats.concret.upside.R
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.BaseFragment
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager
-import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.backHome
-import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.clickInt
-import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.open
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.bbbbhhee
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.cccckkii
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.oooonn
 import com.phoenix.tail.butterfly.eats.concret.upside.databinding.FragmentStartBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -30,9 +30,9 @@ class StartFragment : BaseFragment<FragmentStartBinding, StartViewModel>() {
 
     override fun setupViews() {
         startCountdown()
-        AdManager.loadAd(open)
-        AdManager.loadAd(clickInt)
-        AdManager.loadAd(backHome)
+        AdManager.loadAd(oooonn)
+        AdManager.loadAd(cccckkii)
+        AdManager.loadAd(bbbbhhee)
     }
 
     override fun observeViewModel() {
@@ -58,15 +58,15 @@ class StartFragment : BaseFragment<FragmentStartBinding, StartViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { progress ->
                 val progressPercentage = ((progress + 1).toFloat() / count.toFloat() * 100).toInt()
-                if (progressPercentage > 28 && AdManager.jumFunAd(open)) {
+                if (progressPercentage > 28 && AdManager.jumFunAd(oooonn)) {
                     disposable.dispose()
                     finishDisposable.dispose()
                     viewModel.liveHomeData.postValue(true)
                     return@subscribe
                 }
-                if (progressPercentage > 28 && AdManager.canShowAd(open)) {
+                if (progressPercentage > 28 && AdManager.canShowAd(oooonn)) {
                     Log.e("TAG", "startCountdown:show")
-                    AdManager.showAd(open, requireActivity()) {
+                    AdManager.showAd(oooonn, requireActivity()) {
                         viewModel.liveHomeData.postValue(true)
                     }
                     disposable.dispose()

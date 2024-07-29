@@ -1,6 +1,6 @@
 package com.phoenix.tail.butterfly.eats.concret.upside.bbbnn
 
-import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.open
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager.oooonn
 
 object AdCacheManager {
     private const val EXPIRATION_TIME = 50 * 60 * 1000 // 50 minutes in milliseconds
@@ -27,7 +27,7 @@ object AdCacheManager {
     }
 
     private fun cleanExpiredAds(typeData: String) {
-        val timeData = if (typeData == open) {
+        val timeData = if (typeData == oooonn) {
             EXPIRATION_TIME_OPEN
         } else {
             EXPIRATION_TIME

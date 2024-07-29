@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-open class BaseViewModel : ViewModel() {
+ open class BaseViewModel : ViewModel() {
 
     fun launchOnIO(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
