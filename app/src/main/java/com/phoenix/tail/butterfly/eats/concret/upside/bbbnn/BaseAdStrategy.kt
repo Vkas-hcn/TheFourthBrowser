@@ -20,6 +20,10 @@ abstract class BaseAdStrategy : AdStrategy {
         index: Int,
         callback: (Boolean, CachedAd?) -> Unit
     ) {
+        if (AAApp().getIsBlack() && ads[0].wwwweeeee != oooonn) {
+            Log.e("TAG", "is black--ad--not show")
+            return
+        }
         if (index >= ads.size) {
             if (ads[0].wwwweeeee == oooonn && !openLoadOne) {
                 openLoadOne = true

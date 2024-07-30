@@ -28,6 +28,7 @@ class PpFragment : BaseFragment<FragmentPpBinding, PpViewModel>() {
             customizeReturnKey()
         }
         binding.webPp.apply {
+            binding.showPaPageLoading = true
             loadUrl(DataUtils.pp_url)
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
@@ -35,6 +36,11 @@ class PpFragment : BaseFragment<FragmentPpBinding, PpViewModel>() {
                     request: WebResourceRequest?
                 ): Boolean {
                     return true
+                }
+
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    binding.showPaPageLoading = false
                 }
             }
         }
@@ -44,6 +50,10 @@ class PpFragment : BaseFragment<FragmentPpBinding, PpViewModel>() {
     }
 
     override fun customizeReturnKey() {
+        if(binding?.showPaPageLoading!!){
+            binding.showPaPageLoading = false
+            return
+        }
         showBackAd {
             navigateTo(R.id.action_ppFragment_to_homeFragment)
         }

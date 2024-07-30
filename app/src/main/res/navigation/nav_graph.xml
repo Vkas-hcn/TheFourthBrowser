@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_homeFragment_to_ppFragment"
             app:destination="@id/ppFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_markBookFragment"
+            app:destination="@id/markBookFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -44,6 +47,14 @@
         tools:layout="@layout/fragment_pp" >
         <action
             android:id="@+id/action_ppFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/markBookFragment"
+        android:name="com.phoenix.tail.butterfly.eats.concret.upside.vvvvpp.mmmmbbbkk.MarkBookFragment"
+        android:label="MarkBookFragment" >
+        <action
+            android:id="@+id/action_markBookFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

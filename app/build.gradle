@@ -77,5 +77,6 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.1.1"
     implementation 'org.jsoup:jsoup:1.14.3'
     implementation 'com.github.megatronking.stringfog:xor:4.0.1'
-
+    implementation 'com.adjust.sdk:adjust-android:4.33.5'
+    implementation("com.google.android.ump:user-messaging-platform:3.0.0")
 }

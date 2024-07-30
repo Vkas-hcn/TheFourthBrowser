@@ -21,10 +21,10 @@ object DataUtils {
     val pp_url = "https://www.google.com/"
     const val ccckk_url = "https://faustian.browserstable.com/guignol/electra/plane"
 
-    const val ins_url = "https://www.baidu.com/"
-    const val fb_url = "https://www.baidu.com/"
-    const val netfilx_url = "https://www.baidu.com/"
-    const val ytb_url = "https://www.baidu.com/"
+    const val ins_url = "https://www.instagram.com/"
+    const val fb_url = "https://www.facebook.com/"
+    const val netfilx_url = "https://www.netflix.com/"
+    const val ytb_url = "https://www.youtube.com/"
 
 
     const val ser_google = "https://www.google.com/search?q="
@@ -117,6 +117,34 @@ object DataUtils {
             runBlocking {
                 SaDataStore.edit { preferences ->
                     preferences[stringPreferenceKey("searchData")] = value.orEmpty()
+                }
+            }
+        }
+
+    var Context.aaajjs: String?
+        get() = runBlocking {
+            SaDataStore.data
+                .map { preferences -> preferences[stringPreferenceKey("aaajjs")] }
+                .first()
+        }
+        set(value) {
+            runBlocking {
+                SaDataStore.edit { preferences ->
+                    preferences[stringPreferenceKey("aaajjs")] = value.orEmpty()
+                }
+            }
+        }
+
+    var Context.ccccmmttt: String?
+        get() = runBlocking {
+            SaDataStore.data
+                .map { preferences -> preferences[stringPreferenceKey("ccccmmttt")] }
+                .first()
+        }
+        set(value) {
+            runBlocking {
+                SaDataStore.edit { preferences ->
+                    preferences[stringPreferenceKey("ccccmmttt")] = value.orEmpty()
                 }
             }
         }

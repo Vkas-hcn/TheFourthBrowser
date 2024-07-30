@@ -110,7 +110,7 @@ object AdManager {
         val jumState: Boolean = !(((AAApp.appComponent.showInt?.toInt()
             ?: 0) < ads.showUpperLimit) && ((AAApp.appComponent.cccckkii?.toInt()
             ?: 0) < ads.clickUpperLimit))
-        return !canShowAd(type) && jumState
+        return (!canShowAd(type) && jumState)||(AAApp().getIsBlack()&& type!= oooonn)
     }
 
     fun showAd(type: String, activity: FragmentActivity, onAdDismissed: () -> Unit) {

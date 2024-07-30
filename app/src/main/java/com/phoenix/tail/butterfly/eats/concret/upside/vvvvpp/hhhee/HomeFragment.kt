@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.phoenix.tail.butterfly.eats.concret.upside.R
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp.Companion.jumpMark
+import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.AAApp.Companion.markWeburl
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbee.BaseFragment
 import com.phoenix.tail.butterfly.eats.concret.upside.bbbnn.AdManager
 import com.phoenix.tail.butterfly.eats.concret.upside.databinding.FragmentHomeBinding
@@ -37,6 +39,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
     private var isAllCheckMark = false
     private var isAllUnCheckHistory = false
+
     override val layoutId: Int
         get() = R.layout.fragment_home
 
@@ -45,6 +48,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
 
     override fun setupViews() {
+        Log.e("TAG", "setupViews: home")
         customWebView = activity?.let { CustomWebView(it) }!!
         customWebView.setOnWebViewCallbackListener(this)
         setEditView()
@@ -59,9 +63,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     override fun onResume() {
         super.onResume()
         setImgSearchLogo()
+        if (jumpMark != -1) {
+            binding.showPage = jumpMark
+            customWebView.loadCustomWeb(markWeburl, true)
+            jumpMark = -1
+        }
     }
 
-    private fun setImgSearchLogo(){
+    private fun setImgSearchLogo() {
         when (AAApp.appComponent.searchData) {
             "1" -> {
                 binding.imgSearchLogo.setImageResource(R.drawable.ic_bing)
@@ -91,6 +100,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     }
 
     private fun clickFun() {
+        binding.imgSearchLogo.setOnClickListener {
+            navigateTo(R.id.action_homeFragment_to_searchFragment)
+        }
         binding.imgHomeSearch.setOnClickListener {
             urlToWebView(binding.etHome)
         }
@@ -98,6 +110,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             binding.showMenu = false
         }
         binding.aivHome.setOnClickListener {
+            if (binding.showPage == 1) {
+                return@setOnClickListener
+            }
             showClickAd {
                 binding.showPage = 1
                 binding.showMenu = false
@@ -105,6 +120,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         }
         binding.aivHistory.setOnClickListener {
             binding.showMenu = false
+            if (binding.showPage == 2) {
+                return@setOnClickListener
+            }
             if (binding.showPage == 0) {
                 customWebView.handleBackPress()
             } else {
@@ -116,6 +134,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         }
         binding.aivMark.setOnClickListener {
             binding.showMenu = false
+            if (binding.showPage == 3) {
+                return@setOnClickListener
+            }
             if (binding.showPage == 0) {
                 customWebView.goForwardPage()
             } else {
@@ -161,27 +182,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         }
         binding.tvMarks.setOnClickListener {
             showClickAd {
-                binding.showMenu = true
-                initMarksAdapter()
-                binding.showPage = 3
+                navigateTo(R.id.action_homeFragment_to_markBookFragment)
                 binding.showMenu = false
+                jumpMark = binding?.showPage!!
+                markWeburl = customWebView.getWeburl()
             }
         }
         binding.tvSEngine.setOnClickListener {
             navigateTo(R.id.action_homeFragment_to_searchFragment)
         }
         binding.tvShare.setOnClickListener {
+            AAApp.isCanHots = false
             activity?.let { it1 -> viewModel.shareText(it1) }
         }
         binding.tvPrivacy.setOnClickListener {
             navigateTo(R.id.action_homeFragment_to_ppFragment)
         }
 
-        binding.imgCheck.setOnClickListener {
-            if(markListData.isEmpty())return@setOnClickListener
-            isAllCheckMark = !isAllCheckMark
-            isShowAllSelected(isAllCheckMark)
-        }
+//        binding.imgCheck.setOnClickListener {
+//            if(markListData.isEmpty())return@setOnClickListener
+//            isAllCheckMark = !isAllCheckMark
+//            isShowAllSelected(isAllCheckMark)
+//        }
 
         binding.atvDelete.setOnClickListener {
             activity?.let { activityContext ->
@@ -201,7 +223,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
         }
         binding.imgCheckHistory.setOnClickListener {
-            if(historyListData.isEmpty())return@setOnClickListener
+            if (historyListData.isEmpty()) return@setOnClickListener
             isAllUnCheckHistory = !isAllUnCheckHistory
             isShowAllSelectedHistory(isAllUnCheckHistory)
         }
@@ -268,7 +290,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         markAdapter.setOnItemClickListener(object : PaperWebAdapter.OnItemClickListener {
             override fun onItemClick(date: String) {
                 binding.showPage = 0
-                historyListData?.forEach {
+                markListData?.forEach {
                     if (it.date == date) {
                         customWebView.loadCustomWeb(it.url, false)
                     }
@@ -280,7 +302,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
                 isAllCheckMark = true
                 var hasSelected = false // Flag to track if any item is selected
 
-                markListData?.forEach {
+                markListData.forEach {
                     if (it.date == date) {
                         it.selected = !it.selected
                     }

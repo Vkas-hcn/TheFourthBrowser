@@ -115,6 +115,9 @@ class CustomWebView @JvmOverloads constructor(
             isGone = false
         )
     }
+    fun getWeburl():String{
+        return url ?: ""
+    }
 
     @SuppressLint("SuspiciousIndentation")
     fun saveWebsiteInfo(context: Context, isMark: Boolean) {
