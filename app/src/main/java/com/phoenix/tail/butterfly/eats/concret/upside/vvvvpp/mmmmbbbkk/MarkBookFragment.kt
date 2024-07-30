@@ -120,7 +120,8 @@ class MarkBookFragment : BaseFragment<FragmentMarkbookBinding, MarkBookViewModel
             override fun onItemClick(date: String) {
                 markListData.forEach {
                     if (it.date == date) {
-                        customWebView.loadCustomWeb(it.url, false)
+                        navigateTo(R.id.action_markBookFragment_to_homeFragment)
+                        AAApp.markWeburl = it.url
                     }
                 }
             }

@@ -64,8 +64,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         super.onResume()
         setImgSearchLogo()
         if (jumpMark != -1) {
+            if (markWeburl.isNotBlank()) {
+                binding.showPage = 0
+                customWebView.loadCustomWeb(markWeburl, true)
+                markWeburl = ""
+                jumpMark = -1
+                return
+            }
             binding.showPage = jumpMark
-            customWebView.loadCustomWeb(markWeburl, true)
             jumpMark = -1
         }
     }
@@ -185,7 +191,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
                 navigateTo(R.id.action_homeFragment_to_markBookFragment)
                 binding.showMenu = false
                 jumpMark = binding?.showPage!!
-                markWeburl = customWebView.getWeburl()
+                if (jumpMark == 0) {
+                    markWeburl = customWebView.getWeburl()
+                }
             }
         }
         binding.tvSEngine.setOnClickListener {
